@@ -22,9 +22,12 @@ public class ShadedPanel extends JPanel {
 	
 	private LifeGame lifeGame;
 	private int gridSize = 10;
-	private int radius = 20;
+	private int radius = 100;
 	private int fps = 60;
-	private double updateFrequency = 2;
+	private int cutOff = 0;
+	private double brightness = .05;
+	private int frameCutOff = cutOff;
+	private double updateFrequency = 5;
 	private Thread gameThread;
 	private BufferedImage currImg;
 	private BufferedImage nextImg;
@@ -68,7 +71,7 @@ public class ShadedPanel extends JPanel {
 					if(x >= 800 || x < 0 || y >= 450 || y < 0) continue;
 					double d = Math.sqrt(Math.pow(x - c.x * gridSize, 2) + Math.pow(y - c.y * gridSize, 2));
 					if(d > radius) continue;
-					int color = (int) (255 * (1 - d / radius));
+					int color = (int) (brightness * 255 * (1 - d / radius));
 					color += raster.getSample(x, y, 0);
 					if(color > 255) color = 255;
 					raster.setSample(x, y, 0, color);
@@ -79,7 +82,7 @@ public class ShadedPanel extends JPanel {
 		for(int x = 0; x < 800; x++) {
 			for(int y = 0; y < 450; y++) {
 				int color = raster.getSample(x, y, 0);
-				if(color < 60) raster.setSample(x, y, 0, 0);
+				if(color < cutOff) raster.setSample(x, y, 0, 0);
 			}
 		}
 		
@@ -115,6 +118,7 @@ public class ShadedPanel extends JPanel {
 			int x = k % 800;
 			
 			int currVal = (int) (m.getValue() * currFrame + currImg.getRaster().getSample(x, y, 0));
+			if(currVal < frameCutOff) continue;
 			r.setSample(x, y, 0, currVal);
 		}
 		
