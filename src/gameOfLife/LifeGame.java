@@ -47,8 +47,7 @@ public class LifeGame {
 		updateGUI = updater;
 	}
 	
-	private void update() {
-		// Update Cells
+	public void update() {
 		ArrayList<Cell> newCells = new ArrayList<>();
 		
 		for(Cell cell : cells) {
