@@ -21,7 +21,7 @@ public class BeachRenderer extends ShadedPanel {
 	private int dirtColor = 8247896;
 	private int stoneColor = 13553358;
 	private int smoothness = 5;
-	private int useableLandCutOff = 300000;
+	private int useableLandCutOff = 10000;
 	
 	public BeachRenderer() {
 		super();
@@ -86,16 +86,24 @@ public class BeachRenderer extends ShadedPanel {
 			finalImage = applyGaussianBlur(finalImage);
 		}
 		
-		WritableRaster r = getAlteredImage(finalImage).getRaster();
+		finalImage = getAlteredImage(finalImage);
 		
 		int count = 0;
 		
+		WritableRaster r = finalImage.getRaster();
+		
 		for(int x = 0;x<800;x++) {
 			for(int y = 0;y<450;y++) {
-				if(r.getSample(x, y, 0) != waterColor) count++;
+				int red   = r.getSample(x, y, 0);
+				int green = r.getSample(x, y, 1);
+				int blue  = r.getSample(x, y, 2);
+
+				int rgb = (red << 16) | (green << 8) | blue;
+				
+				if(rgb != waterColor) count++;
 			}
 		}
-		
+		System.out.println(count);
 		if(count > useableLandCutOff) gameThread = null;
 		else {
 			lifeGame.loadDefaultStartState();

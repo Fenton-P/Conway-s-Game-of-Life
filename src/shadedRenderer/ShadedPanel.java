@@ -22,11 +22,11 @@ public class ShadedPanel extends JPanel {
 	
 	protected LifeGame lifeGame;
 	private int gridSize = 10;
-	private int radius = 50;
+	private int radius = 100;
 	private int fps = 20;
 	private int cutOff = 20;
-	private double brightness = 0.3;
-	private double adderMultiplier = .97;
+	private double brightness = 0.01;
+	private double adderMultiplier = 1.2;
 	private int frameCutOff = 0;
 	private double updateFrequency = 20;
 	protected Thread gameThread;
