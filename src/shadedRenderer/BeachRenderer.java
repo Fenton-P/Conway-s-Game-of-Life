@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.awt.image.WritableRaster;
 
 public class BeachRenderer extends ShadedPanel {
@@ -18,6 +20,7 @@ public class BeachRenderer extends ShadedPanel {
 	private int sandColor = 16768601;
 	private int dirtColor = 8247896;
 	private int stoneColor = 13553358;
+	private int smoothness = 5;
 	
 	public BeachRenderer() {
 		super();
@@ -42,10 +45,15 @@ public class BeachRenderer extends ShadedPanel {
 		
 		//BufferedImage frame = getFrame(cells);
 		if(displayImg == null) return;
-		paint.drawImage(getAlteredImage(), 0, 0, null);
+		BufferedImage finalImage = applyGaussianBlur(displayImg);
+		
+		for(int i = 0;i<smoothness;i++) {
+			finalImage = applyGaussianBlur(finalImage);
+		}
+		paint.drawImage(getAlteredImage(finalImage), 0, 0, null);
 	}
 	
-	private BufferedImage getAlteredImage() {
+	private BufferedImage getAlteredImage(BufferedImage displayImg) {
 		BufferedImage i = new BufferedImage(800, 450, BufferedImage.TYPE_INT_RGB);
 		
 		WritableRaster r = displayImg.getRaster();
@@ -65,5 +73,16 @@ public class BeachRenderer extends ShadedPanel {
 		}
 		
 		return i;
+	}
+	
+	public BufferedImage applyGaussianBlur(BufferedImage src) {
+	    float[] matrix = {
+	        1f/16f, 2f/16f, 1f/16f,
+	        2f/16f, 4f/16f, 2f/16f,
+	        1f/16f, 2f/16f, 1f/16f
+	    };
+	    Kernel kernel = new Kernel(3, 3, matrix);
+	    ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+	    return op.filter(src, null);
 	}
 }
