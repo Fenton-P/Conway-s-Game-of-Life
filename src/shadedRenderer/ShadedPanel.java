@@ -24,11 +24,12 @@ public class ShadedPanel extends JPanel {
 	private int gridSize = 10;
 	private int radius = 100;
 	private int fps = 20;
-	private int cutOff = 20;
-	private double brightness = 0.01;
-	private double adderMultiplier = 1.2;
+	private int cutOff = 0;
+	private double brightness = .01;
+	private double adderMultiplier = 1.1;
 	private int frameCutOff = 0;
 	private double updateFrequency = 20;
+	private int randomness = 35;
 	protected Thread gameThread;
 	private BufferedImage currImg;
 	private BufferedImage nextImg;
@@ -38,6 +39,13 @@ public class ShadedPanel extends JPanel {
 	private Map<Integer, Double> changeMap;
 	protected int iterations = 100;
 	protected int initialIterations = iterations;
+	
+	public int adjust(int color) {
+		double nc = color + (Math.random() * randomness - randomness / 2.0);
+		if(nc > 255) nc = 255;
+		if(nc < 0) nc = 0;
+		return (int) nc;
+	}
 	
 	public ShadedPanel() {
 		setPreferredSize(new Dimension(800, 450));
@@ -87,6 +95,7 @@ public class ShadedPanel extends JPanel {
 			for(int y = 0; y < 450; y++) {
 				int color = raster.getSample(x, y, 0);
 				if(color < cutOff) raster.setSample(x, y, 0, 0);
+				raster.setSample(x, y, 0, adjust(color));
 			}
 		}
 		

@@ -12,9 +12,9 @@ import java.awt.image.WritableRaster;
 public class BeachRenderer extends ShadedPanel {
 	private static final long serialVersionUID = 723473713174343793L;
 	
-	private int waterCutOff = 80;
+	private int waterCutOff = 20;
 	private int sandCutOff = 130;
-	private int dirtCutOff = 250;
+	private int dirtCutOff = 230;
 	private int stoneCutOff = 255;
 	private int waterColor = 4095990;
 	private int sandColor = 16768601;
@@ -103,7 +103,7 @@ public class BeachRenderer extends ShadedPanel {
 				if(rgb != waterColor) count++;
 			}
 		}
-		System.out.println(count);
+		
 		if(count > useableLandCutOff) gameThread = null;
 		else {
 			lifeGame.loadDefaultStartState();
