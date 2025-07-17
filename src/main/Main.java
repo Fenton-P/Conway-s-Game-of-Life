@@ -2,7 +2,7 @@ package main;
 
 import gameOfLife.LifeGame;
 import shadedRenderer.BeachRenderer;
-import shadedRenderer.ShadedPanel;
+//import shadedRenderer.ShadedPanel;
 
 public class Main {
 

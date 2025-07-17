@@ -22,14 +22,14 @@ public class ShadedPanel extends JPanel {
 	
 	protected LifeGame lifeGame;
 	private int gridSize = 10;
-	private int radius = 100;
-	private int fps = 20;
+	private int radius = 70;
+	private int fps = 60;
 	private int cutOff = 0;
-	private double brightness = .01;
-	private double adderMultiplier = 1.1;
+	private double brightness = .9;
+	private double adderMultiplier = 1;
 	private int frameCutOff = 0;
-	private double updateFrequency = 20;
-	private int randomness = 35;
+	private double updateFrequency = 5;
+	private int randomness = 50;
 	protected Thread gameThread;
 	private BufferedImage currImg;
 	private BufferedImage nextImg;
@@ -37,7 +37,7 @@ public class ShadedPanel extends JPanel {
 	private int currFrame = 0;
 	private int frames = (int) (fps / updateFrequency);
 	private Map<Integer, Double> changeMap;
-	protected int iterations = 100;
+	protected int iterations = 20;
 	protected int initialIterations = iterations;
 	
 	public int adjust(int color) {
@@ -45,6 +45,10 @@ public class ShadedPanel extends JPanel {
 		if(nc > 255) nc = 255;
 		if(nc < 0) nc = 0;
 		return (int) nc;
+	}
+	
+	public int add(int c1, int c2) {
+		return c1 + c2;
 	}
 	
 	public ShadedPanel() {
@@ -83,7 +87,7 @@ public class ShadedPanel extends JPanel {
 					double d = Math.sqrt(Math.pow(x - c.x * gridSize, 2) + Math.pow(y - c.y * gridSize, 2));
 					if(d > radius) continue;
 					int color = (int) (brightness * 255 * (1 - d / radius));
-					color += raster.getSample(x, y, 0);
+					color = add(color, raster.getSample(x, y, 0));
 					color = (int) (color * adderMultiplier);
 					if(color > 255) color = 255;
 					raster.setSample(x, y, 0, color);
