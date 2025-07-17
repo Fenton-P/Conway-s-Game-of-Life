@@ -17,6 +17,8 @@ public class LifeGame {
 	}
 	
 	public void loadDefaultStartState() {
+		cells = new ArrayList<>();
+		
 		int startingCells = 100;
 		int spreadX = 20;
 		int offsetX = 30;

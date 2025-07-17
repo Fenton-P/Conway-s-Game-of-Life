@@ -20,22 +20,24 @@ import gameOfLife.LifeGame;
 public class ShadedPanel extends JPanel {
 	private static final long serialVersionUID = 762324677395901363L;
 	
-	private LifeGame lifeGame;
+	protected LifeGame lifeGame;
 	private int gridSize = 10;
 	private int radius = 50;
-	private int fps = 200;
+	private int fps = 20;
 	private int cutOff = 20;
 	private double brightness = 0.3;
 	private double adderMultiplier = .97;
 	private int frameCutOff = 0;
 	private double updateFrequency = 20;
-	private Thread gameThread;
+	protected Thread gameThread;
 	private BufferedImage currImg;
 	private BufferedImage nextImg;
 	protected BufferedImage displayImg;
 	private int currFrame = 0;
 	private int frames = (int) (fps / updateFrequency);
 	private Map<Integer, Double> changeMap;
+	protected int iterations = 100;
+	protected int initialIterations = iterations;
 	
 	public ShadedPanel() {
 		setPreferredSize(new Dimension(800, 450));
@@ -110,6 +112,7 @@ public class ShadedPanel extends JPanel {
 			currFrame++;
 			setChangeMap();
 			SwingUtilities.invokeLater(this::repaint);
+			if(--iterations == 0) attemptGameEnd();
 			return;
 		}
 		
@@ -126,6 +129,10 @@ public class ShadedPanel extends JPanel {
 		
 		currFrame++;
 		SwingUtilities.invokeLater(this::repaint);
+	}
+	
+	protected void attemptGameEnd() {
+		gameThread = null;
 	}
 	
 	private BufferedImage copyImage(BufferedImage source) {
@@ -158,7 +165,8 @@ public class ShadedPanel extends JPanel {
 			update();
 			
 			try {
-				Thread.sleep(1000 / fps);
+				//Thread.sleep(1000 / fps);
+				Thread.sleep(0);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
