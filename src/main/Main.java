@@ -1,12 +1,12 @@
 package main;
 
 import gameOfLife.LifeGame;
-import shadedRenderer.ShadedPanel;
+import shadedRenderer.BeachRenderer;
 
 public class Main {
 
 	public static void main(String[] args) {
-		ShadedPanel panel = new ShadedPanel();
+		BeachRenderer panel = new BeachRenderer();
 		
 		MainFrame mainFrame = new MainFrame(panel);
 		

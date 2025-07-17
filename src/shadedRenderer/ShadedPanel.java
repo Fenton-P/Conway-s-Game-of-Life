@@ -22,16 +22,17 @@ public class ShadedPanel extends JPanel {
 	
 	private LifeGame lifeGame;
 	private int gridSize = 10;
-	private int radius = 100;
-	private int fps = 60;
+	private int radius = 200;
+	private int fps = 200;
 	private int cutOff = 0;
-	private double brightness = .05;
-	private int frameCutOff = cutOff;
-	private double updateFrequency = 5;
+	private double brightness = 0.04;
+	private double adderMultiplier = .99;
+	private int frameCutOff = 0;
+	private double updateFrequency = 3;
 	private Thread gameThread;
 	private BufferedImage currImg;
 	private BufferedImage nextImg;
-	private BufferedImage displayImg;
+	protected BufferedImage displayImg;
 	private int currFrame = 0;
 	private int frames = (int) (fps / updateFrequency);
 	private Map<Integer, Double> changeMap;
@@ -73,6 +74,7 @@ public class ShadedPanel extends JPanel {
 					if(d > radius) continue;
 					int color = (int) (brightness * 255 * (1 - d / radius));
 					color += raster.getSample(x, y, 0);
+					color = (int) (color * adderMultiplier);
 					if(color > 255) color = 255;
 					raster.setSample(x, y, 0, color);
 				}
